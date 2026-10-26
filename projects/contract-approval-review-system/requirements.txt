@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+jinja2
+httpx
+pydantic-settings
+python-multipart
+pdfplumber
+python-docx
+rapidocr-onnxruntime
+onnxruntime
+numpy
+Pillow
+pypdfium2
+reportlab
+pytest
+pytest-asyncio

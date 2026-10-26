@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "note": "match_text 为字符串时直接入库；为数组/对象时由 seed 脚本 json.dumps(..., ensure_ascii=False) 后入库。",
+  "rules": [
+    {
+      "rule_code": "R001",
+      "rule_name": "预付款比例过高",
+      "category": "预付款比例",
+      "risk_level": "high",
+      "rule_status": "enabled",
+      "match_mode": "numeric_threshold",
+      "match_text": {
+        "pattern": "(?:预付款|预付)[^。；\\n]{0,30}?(\\d+(?:\\.\\d+)?)\\s*%",
+        "group": 1,
+        "op": "gt",
+        "threshold": 30,
+        "unit": "%"
+      },
+      "suggestion_text": "预付款比例超过30%，建议降低预付款比例，或要求对方提供履约担保/预付款保函。",
+      "sort_order": 10
+    },
+    {
+      "rule_code": "R002",
+      "rule_name": "付款周期过长",
+      "category": "付款周期",
+      "risk_level": "medium",
+      "rule_status": "enabled",
+      "match_mode": "numeric_threshold",
+      "match_text": {
+        "pattern": "(?:付款|账期|支付|验收|交付)[^。；\\n]{0,20}?(\\d+)\\s*(?:个工作日|日|天)",
+        "group": 1,
+        "op": "gt",
+        "threshold": 60,
+        "unit": "天"
+      },
+      "suggestion_text": "付款周期超过60天，建议缩短账期，或增加逾期付款利息/资金占用费条款。",
+      "sort_order": 20
+    },
+    {
+      "rule_code": "R003",
+      "rule_name": "自动续约条款",
+      "category": "自动续约",
+      "risk_level": "medium",
+      "rule_status": "enabled",
+      "match_mode": "keyword",
+      "match_text": "自动续约",
+      "suggestion_text": "合同含自动续约条款，建议明确续约通知期限、续约次数上限和单方终止权。",
+      "sort_order": 30
+    },
+    {
+      "rule_code": "R004",
+      "rule_name": "违约责任缺失",
+      "category": "违约责任",
+      "risk_level": "medium",
+      "rule_status": "enabled",
+      "match_mode": "absence",
+      "match_text": ["违约金", "赔偿责任", "违约责任"],
+      "suggestion_text": "未见违约责任条款，建议补充违约金计算方式、赔偿范围和责任上限。",
+      "sort_order": 40
+    },
+    {
+      "rule_code": "R005",
+      "rule_name": "管辖地不利于我方",
+      "category": "管辖地",
+      "risk_level": "high",
+      "rule_status": "enabled",
+      "match_mode": "regex",
+      "match_text": "(?:由|向)?(?:乙方|供方|卖方|对方)(?:所在地|注册地)?[^。；\\n]{0,10}?(?:人民)?法院[^。；\\n]{0,10}?(?:管辖|诉讼|起诉)",
+      "suggestion_text": "争议由对方所在地法院管辖，建议改为我方所在地法院或约定的中立仲裁机构。",
+      "sort_order": 50
+    },
+    {
+      "rule_code": "R006",
+      "rule_name": "合同主体信息缺失",
+      "category": "主体信息缺失",
+      "risk_level": "high",
+      "rule_status": "enabled",
+      "match_mode": "field_check",
+      "match_text": {
+        "fields": ["party_a", "party_b"],
+        "op": "any_missing"
+      },
+      "suggestion_text": "合同主体信息缺失，请补充签约双方完整名称、统一社会信用代码和住所地。",
+      "sort_order": 60
+    },
+    {
+      "rule_code": "R007",
+      "rule_name": "合同金额缺失",
+      "category": "金额缺失",
+      "risk_level": "high",
+      "rule_status": "enabled",
+      "match_mode": "field_check",
+      "match_text": {
+        "field": "amount",
+        "op": "missing"
+      },
+      "suggestion_text": "合同金额缺失，请补充明确金额、币种，以及是否含税的约定。",
+      "sort_order": 70
+    },
+    {
+      "rule_code": "R008",
+      "rule_name": "保密条款缺失",
+      "category": "保密缺失",
+      "risk_level": "medium",
+      "rule_status": "enabled",
+      "match_mode": "absence",
+      "match_text": ["保密"],
+      "suggestion_text": "未见保密条款，建议补充保密信息范围、保密期限、例外情形和违约责任。",
+      "sort_order": 80
+    },
+    {
+      "rule_code": "R009",
+      "rule_name": "数据处理条款缺失",
+      "category": "数据处理",
+      "risk_level": "medium",
+      "rule_status": "enabled",
+      "match_mode": "absence",
+      "match_text": ["数据", "个人信息"],
+      "suggestion_text": "未见数据处理/个人信息保护条款，建议补充数据使用范围、安全义务和合规责任。",
+      "sort_order": 90
+    },
+    {
+      "rule_code": "R010",
+      "rule_name": "知识产权条款缺失",
+      "category": "知识产权",
+      "risk_level": "medium",
+      "rule_status": "enabled",
+      "match_mode": "absence",
+      "match_text": ["知识产权", "著作权", "专利"],
+      "suggestion_text": "未见知识产权条款，建议明确成果归属、许可范围、使用限制和侵权责任。",
+      "sort_order": 100
+    },
+    {
+      "rule_code": "R011",
+      "rule_name": "知识产权归属不利",
+      "category": "知识产权",
+      "risk_level": "high",
+      "rule_status": "enabled",
+      "match_mode": "regex",
+      "match_text": "知识产权(?:归属|归)(?:于)?\\s*(?:乙方|供方|卖方|对方)",
+      "suggestion_text": "知识产权归属不利于我方，建议改为归属甲方，或明确我方享有永久、免费的使用许可。",
+      "sort_order": 110
+    },
+    {
+      "rule_code": "R012",
+      "rule_name": "验收标准缺失",
+      "category": "验收标准缺失",
+      "risk_level": "medium",
+      "rule_status": "enabled",
+      "match_mode": "absence",
+      "match_text": ["验收标准", "验收合格", "验收方式", "验收条件"],
+      "suggestion_text": "未见验收标准，建议补充验收指标、验收流程、异议期限和整改责任。",
+      "sort_order": 120
+    },
+    {
+      "rule_code": "R013",
+      "rule_name": "合同期限缺失",
+      "category": "合同期限",
+      "risk_level": "low",
+      "rule_status": "enabled",
+      "match_mode": "field_check",
+      "match_text": {
+        "field": "expiry_date",
+        "op": "missing"
+      },
+      "suggestion_text": "合同到期时间缺失，建议补充明确的生效日期、终止日期和续期安排。",
+      "sort_order": 130
+    },
+    {
+      "rule_code": "R014",
+      "rule_name": "无限赔偿责任",
+      "category": "赔偿责任",
+      "risk_level": "high",
+      "rule_status": "enabled",
+      "match_mode": "regex",
+      "match_text": "(?:赔偿|承担)[^。；\\n]{0,20}(?:全部|一切|无限|不受限制)(?:损失|责任|赔偿)",
+      "suggestion_text": "存在无限/不设上限的赔偿责任表述，建议设置赔偿上限并排除间接损失、可得利益损失。",
+      "sort_order": 140
+    }
+  ]
+}

@@ -5,6 +5,7 @@
 ## 项目列表
 
 - [自动化安全评估系统](projects/auto-security/README.md) — 基于 FastAPI + React + Docker 沙箱的自动化安全评估系统，支持规则引擎、LLM 多角色、ReAct 工具循环与可选的 LangGraph 编排。
+- [合同审批审查系统](projects/contract-approval-review-system/README.md) — 基于 FastAPI + SQLite 的合同审批自动审查系统，支持 PDF/DOCX/OCR 解析、14 条规则的证据审查、Mock 审批系统、异步流水线与幂等评论回写。
 
 ## 目录约定
 

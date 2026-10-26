@@ -1,0 +1,9 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "unit: 纯函数与匹配器测试",
+    "integration: 服务/数据库集成测试",
+    "e2e: 真实服务器端到端测试",
+    "ocr: 需要 RapidOCR 的测试",
+]

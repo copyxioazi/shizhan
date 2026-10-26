@@ -1,0 +1,18 @@
+.venv
+.git
+.claude
+.pytest_cache
+__pycache__
+*.py[cod]
+*.egg-info
+
+# 运行时数据通过 volume 挂载，不打进镜像
+data
+.env
+docker.env
+.tmp
+.chrome-*
+
+# 测试与本地文档不参与运行
+tests
+docs

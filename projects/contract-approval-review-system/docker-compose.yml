@@ -1,0 +1,50 @@
+services:
+  contract-review:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: contract-approval-review:latest
+    container_name: contract-approval-review
+    restart: unless-stopped
+    ports:
+      # 宿主机端口可通过 APP_PORT 覆盖，例如 APP_PORT=8080
+      - "${APP_PORT:-8000}:8000"
+    environment:
+      # Mock 上游和本服务在同一个容器内，必须使用容器内部回环地址
+      UPSTREAM_BASE_URL: "http://127.0.0.1:8000"
+      # ===== 数据库地址：在 .env / docker.env 中填写，或直接改这里 =====
+      # 当前使用 SQLite 文件；LOCAL_DB_PATH 是容器内路径，需配合 volumes 挂载
+      LOCAL_DB_PATH: "${LOCAL_DB_PATH:-/app/data/app.db}"
+      MOCK_DB_PATH: "${MOCK_DB_PATH:-/app/data/mock_upstream.db}"
+      # 外部数据库连接串占位（当前代码使用 SQLite，暂不支持 PostgreSQL/MySQL）
+      # DATABASE_URL: "${DATABASE_URL:-}"
+      QUEUE_MAXSIZE: "${QUEUE_MAXSIZE:-100}"
+      WORKER_CONCURRENCY: "${WORKER_CONCURRENCY:-2}"
+      OCR_TEXT_MIN_CHARS: "${OCR_TEXT_MIN_CHARS:-40}"
+      # LLM 可选，默认关闭；值来自项目根目录 .env 或 shell 环境
+      LLM_ENABLED: "${LLM_ENABLED:-false}"
+      LLM_BASE_URL: "${LLM_BASE_URL:-}"
+      LLM_MODEL: "${LLM_MODEL:-}"
+      LLM_API_KEY: "${LLM_API_KEY:-}"
+      LLM_TIMEOUT_SECONDS: "${LLM_TIMEOUT_SECONDS:-15}"
+      # 容器内中文字体（Dockerfile 已安装 fonts-noto-cjk）
+      CN_FONT_PATH: "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
+    volumes:
+      # 默认 ./data 与宿主机共享 SQLite 和附件；可用 DATA_DIR 指定其他目录
+      - "${DATA_DIR:-./data}:/app/data"
+      # 如果 LOCAL_DB_PATH 指向其他容器目录，请在这里增加挂载，例如：
+      # - "/srv/contract-review-db:/app/db"
+    extra_hosts:
+      # Linux 下访问宿主机上的 LLM 服务时可用 host.docker.internal
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    stop_grace_period: 15s

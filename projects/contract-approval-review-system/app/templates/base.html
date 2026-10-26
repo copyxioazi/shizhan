@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title or "合同审批审查系统" }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">合同审批审查系统 <span class="tag">框架</span></div>
+    <nav>
+      <a href="/web/pending">待办</a>
+      <a href="/web/admin/rules">规则</a>
+      <a href="/web/admin/tasks">任务</a>
+      <a href="/web/admin/logs">日志</a>
+      <a href="/web/admin/mock">Mock</a>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">当前为框架阶段，业务逻辑待实现。</footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>

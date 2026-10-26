@@ -1,0 +1,77 @@
+{
+  "version": 2,
+  "generated": true,
+  "generated_by": "scripts/generate_samples.py",
+  "files": [
+    {
+      "file": "apv_2026_001_purchase.pdf",
+      "approval_code": "APV-2026-001",
+      "role": "主合同",
+      "format": "pdf",
+      "expected_parse_status": "success",
+      "expected_overall_risk": "high",
+      "expected_hit_rules": [
+        "R001",
+        "R002",
+        "R003",
+        "R005"
+      ],
+      "sha256": "9f51c3b3a5113e3950bbc237303cb81f800aaf62cbfc581978f7256be1975f71",
+      "file_size": 78758
+    },
+    {
+      "file": "apv_2026_001_quotation.pdf",
+      "approval_code": "APV-2026-001",
+      "role": "次附件",
+      "format": "pdf",
+      "expected_parse_status": "not_parsed",
+      "expected_overall_risk": null,
+      "expected_hit_rules": [],
+      "sha256": "4d3ffbfcb39cc1e62bb7cb3568e80e07ede9f03949f693db2cba865b5a70abaa",
+      "file_size": 38145
+    },
+    {
+      "file": "apv_2026_002_service.docx",
+      "approval_code": "APV-2026-002",
+      "role": "主合同",
+      "format": "docx",
+      "expected_parse_status": "partial",
+      "expected_overall_risk": "medium",
+      "expected_hit_rules": [
+        "R002",
+        "R003",
+        "R008"
+      ],
+      "note": "保密条款缺失导致 partial，但不阻塞规则审查",
+      "sha256": "360e16c74299d299560ffd4b6c001a34827b670c1f1e5ffd427b4a3eb6a341b0",
+      "file_size": 38024
+    },
+    {
+      "file": "apv_2026_003_scan.png",
+      "approval_code": "APV-2026-003",
+      "role": "扫描件",
+      "format": "png",
+      "expected_parse_status": "partial",
+      "expected_overall_risk": "low",
+      "expected_hit_rules": [],
+      "sha256": "50e491238b62751ed4c2a96f07df21d7ac59c66ae11e81df20532d9a277dcb03",
+      "file_size": 265027
+    },
+    {
+      "file": "apv_2026_004_hidden.docx",
+      "approval_code": "APV-2026-004",
+      "role": "缺失附件",
+      "format": "docx",
+      "expected_parse_status": "success",
+      "expected_overall_risk": "high",
+      "expected_hit_rules": [
+        "R001",
+        "R003",
+        "R005"
+      ],
+      "note": "Mock 中 available=0，restore 后可下载",
+      "sha256": "e50ac0d354cf9122de756ca5a268aafcede077ed05d0b74d867290b5420efbf1",
+      "file_size": 37708
+    }
+  ]
+}

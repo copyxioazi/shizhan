@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>合同审批审查</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>合同审批审查</h1>
+    <div class="header-actions">
+      <span id="health" class="tag">检查中…</span>
+      <button id="refreshBtn" class="btn" type="button">刷新</button>
+      <button id="pullBtn" class="btn primary" type="button">拉取待办</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="card-head">
+        <h2>任务</h2>
+        <span id="taskCount" class="muted"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>审批编号</th>
+              <th>标题</th>
+              <th>任务状态</th>
+              <th>回写</th>
+              <th>阶段</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="taskRows">
+            <tr><td colspan="7" class="empty">暂无任务，点击「拉取待办」。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="detailCard" class="card hidden">
+      <div class="card-head">
+        <h2>详情 <span id="detailCode" class="mono"></span></h2>
+        <div>
+          <button id="contentBtn" class="btn" type="button">查看原文</button>
+          <button id="parseBtn" class="btn" type="button">解析</button>
+          <button id="rulesBtn" class="btn" type="button">规则审查</button>
+          <button id="closeDetailBtn" class="btn" type="button">关闭</button>
+        </div>
+      </div>
+
+      <div id="detailInfo" class="info-grid"></div>
+
+      <h3>附件</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>上游 ID</th>
+              <th>文件</th>
+              <th>大小</th>
+              <th>下载状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="attachmentRows"></tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>解析结果</h3>
+          <div id="parseInfo" class="muted">未解析</div>
+        </div>
+        <div>
+          <h3>审查结果</h3>
+          <div id="reviewInfo" class="muted">未保存</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contentCard" class="card hidden">
+      <div class="card-head">
+        <h2>合同内容 <span id="contentFile" class="mono"></span></h2>
+        <div>
+          <button id="reloadContentBtn" class="btn" type="button">刷新</button>
+          <button id="closeContentBtn" class="btn" type="button">关闭</button>
+        </div>
+      </div>
+      <div id="contentMeta" class="muted"></div>
+      <div class="content-layout">
+        <div>
+          <h3>原文</h3>
+          <pre id="contractText" class="contract-text">尚未加载</pre>
+        </div>
+        <aside>
+          <h3>基本信息</h3>
+          <div id="contentBasic" class="muted">未解析</div>
+          <h3>条款</h3>
+          <div id="contentClauses" class="muted">未解析</div>
+          <h3>风险命中</h3>
+          <div id="contentHits" class="muted">暂无命中</div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="reviewCard" class="card hidden">
+      <div class="card-head">
+        <h2>审查结果</h2>
+        <span id="reviewBadge" class="muted">未保存</span>
+      </div>
+      <form id="reviewForm">
+        <label>
+          风险等级
+          <select name="risk">
+            <option value="low">低风险</option>
+            <option value="medium">中风险</option>
+            <option value="high">高风险</option>
+          </select>
+        </label>
+        <label>
+          摘要
+          <textarea name="summary" rows="2" required></textarea>
+        </label>
+        <label>
+          关注点（每行一条）
+          <textarea name="focus" rows="3"></textarea>
+        </label>
+        <label>
+          评论正文
+          <textarea name="comment" rows="4" required></textarea>
+        </label>
+        <div class="row">
+          <button class="btn primary" type="submit">保存结果</button>
+          <button id="writeBtn" class="btn" type="button" disabled>回写评论</button>
+          <button id="fillCommentBtn" class="btn" type="button">生成评论</button>
+        </div>
+      </form>
+    </section>
+
+    <details class="card">
+      <summary><strong>Mock 上游工具</strong></summary>
+      <div class="mock-grid">
+        <div>
+          <h3>故障注入</h3>
+          <label><input type="checkbox" data-fault="detail" /> 详情接口</label>
+          <label><input type="checkbox" data-fault="download" /> 文件下载</label>
+          <label><input type="checkbox" data-fault="comment" /> 评论回写</label>
+          <label>状态码 <input id="faultStatus" type="number" value="500" min="400" max="599" /></label>
+          <button id="faultBtn" class="btn" type="button">应用</button>
+        </div>
+        <div>
+          <h3>恢复附件</h3>
+          <label>上游附件 ID <input id="restoreId" type="number" value="5" min="1" /></label>
+          <button id="restoreBtn" class="btn" type="button">恢复</button>
+        </div>
+        <div>
+          <h3>重置 Mock</h3>
+          <button id="resetBtn" class="btn danger" type="button">重置</button>
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <div id="message" class="message hidden"></div>
+</body>
+</html>

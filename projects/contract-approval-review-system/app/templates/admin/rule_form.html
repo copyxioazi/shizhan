@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ page_title }}</h1>
+<p class="muted">框架占位页。后续在这里维护 rule_code、risk_level、match_mode、match_text、suggestion_text。</p>
+<form class="card" method="post" action="#">
+  <label>规则编号 <input name="rule_code" disabled placeholder="R001"></label>
+  <label>规则名称 <input name="rule_name" disabled placeholder="预付款比例过高"></label>
+  <label>风险等级
+    <select name="risk_level" disabled>
+      <option>low</option><option>medium</option><option>high</option>
+    </select>
+  </label>
+  <label>匹配模式
+    <select name="match_mode" disabled>
+      <option>keyword</option><option>all_keywords</option><option>regex</option>
+      <option>absence</option><option>field_check</option><option>numeric_threshold</option>
+    </select>
+  </label>
+  <label>匹配内容 <textarea name="match_text" disabled rows="4"></textarea></label>
+  <label>建议说明 <textarea name="suggestion_text" disabled rows="3"></textarea></label>
+  <button disabled>保存（待实现）</button>
+</form>
+{% endblock %}
