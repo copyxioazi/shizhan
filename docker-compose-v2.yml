@@ -1,0 +1,42 @@
+# 部署在预置 Linux VM 上，只启动 PostgreSQL 16。
+# 分析沙箱容器由后端通过 Docker SDK 动态创建，不在此文件中定义。
+#
+# 用法（VM 上，仓库根目录）：
+#   docker compose up -d
+#
+# 需要在同目录 .env 中设置 DB_PASSWORD（至少）；其余可选项：
+# DB_USER / DB_NAME / DB_PORT / DB_BIND_ADDR。
+services:
+  postgres:
+    image: postgres:16
+    container_name: ase-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-sec_eval}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      # 必须通过 .env 或环境变量提供；不要在仓库中写入真实密码
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      TZ: Asia/Shanghai
+    ports:
+      # 默认绑定所有网卡，便于 Windows 后端连接 VM；生产环境应改为 host-only IP
+      # 5433 与后端 .env 的 DB_PORT 对齐，避免与 VM 上其他 PostgreSQL 抢占 5432
+      - "${DB_BIND_ADDR:-0.0.0.0}:${DB_PORT:-5433}:5432"
+    volumes:
+      - ase_pgdata:/var/lib/postgresql/data
+      # 首次启动自动执行初始化脚本（已初始化过的数据卷不会重复执行）
+      - ./db/init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-sec_eval}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command:
+      - postgres
+      - -c
+      - timezone=Asia/Shanghai
+      - -c
+      - max_connections=100
+
+volumes:
+  ase_pgdata:
+    name: ase_pgdata
