@@ -1,33 +1,27 @@
-# Python
-backend/.venv/
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.coverage
-.ruff_cache/
-
-# Node
-frontend/node_modules/
-frontend/dist/
-*.local
+# 仓库级通用忽略（各子项目仍可使用自己的 .gitignore）
 
 # 环境与密钥
-.env
+**/.env
+**/.env.*
+!**/.env.example
 
-# 本地知识图谱索引（可能包含源码与配置，绝不入库）
-.gitnexus/
+# 依赖与构建产物
+**/.venv/
+**/node_modules/
+**/dist/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
 
-# 运行时产物（日志、报告、工作区、数据库备份）
-runtime_logs/
-reports/
-workspace/
-pgdata/
+# 运行时数据与本地索引
+**/runtime_logs/
+**/reports/
+**/workspace/
+**/.gitnexus/
+**/pgdata/
 *.dump
 *.bak
 *.sql.gz
-backend/runtime_logs/
-backend/reports/
-backend/workspace/
 
 # IDE / 系统
 .idea/

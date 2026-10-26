@@ -1,0 +1,36 @@
+# Python
+backend/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.ruff_cache/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+*.local
+
+# 环境与密钥
+.env
+
+# 本地知识图谱索引（可能包含源码与配置，绝不入库）
+.gitnexus/
+
+# 运行时产物（日志、报告、工作区、数据库备份）
+runtime_logs/
+reports/
+workspace/
+pgdata/
+*.dump
+*.bak
+*.sql.gz
+backend/runtime_logs/
+backend/reports/
+backend/workspace/
+
+# IDE / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
