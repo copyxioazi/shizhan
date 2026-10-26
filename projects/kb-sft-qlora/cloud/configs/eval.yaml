@@ -1,0 +1,13 @@
+model_id: Qwen/Qwen3-8B
+model_local_dir: /mnt/data/models/Qwen3-8B
+test_file: cloud/data/kb_sft_all.jsonl
+adapter_dir: cloud/runs/qwen3-8b-kb-lora
+output_dir: cloud/runs/eval
+max_new_tokens: 768
+batch_size: 1
+load_in_4bit: true
+bf16: true
+temperature: 0.0
+do_sample: false
+seed: 42
+limit: 0            # 0 = all

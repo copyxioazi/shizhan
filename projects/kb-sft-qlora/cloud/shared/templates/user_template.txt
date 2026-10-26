@@ -1,0 +1,10 @@
+【参考内容】
+{context}
+
+【相关实体】
+{item_names}
+
+【用户问题】
+{question}
+
+请回答：

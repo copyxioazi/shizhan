@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kb-sft-data"
+version = "0.1.0"
+description = "Local CPU data pipeline for the 掌柜智库 Qwen3-8B SFT dataset"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "openai>=1.40",
+  "pyyaml>=6.0",
+  "numpy>=1.26",
+  "pymupdf>=1.24",
+  "rank-bm25>=0.2.2",
+  "jsonschema>=4.21",
+  "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+bge = ["FlagEmbedding>=1.2.10", "torch>=2.1"]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

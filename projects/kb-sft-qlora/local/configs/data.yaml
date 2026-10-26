@@ -1,0 +1,42 @@
+paths:
+  raw_dir: data/raw
+  corpus_dir: data/corpus
+  canon_dir: data/canon
+  candidates_dir: data/candidates
+  verified_dir: data/verified
+  rejected_dir: data/rejected
+  splits_dir: data/splits
+
+corpus:
+  chunk_size: 250
+  chunk_overlap: 50
+  min_chunk_chars: 30
+  seed:
+    hak180_split: "D:/AAAA/output/11、掌柜智库01/资料/05-设备手册汇总/doc/hak180产品安全手册/split.json"
+    hak180_md: "D:/AAAA/output/11、掌柜智库01/资料/05-设备手册汇总/doc/hak180产品安全手册/hak180产品安全手册_new.md"
+    multimeter_pdf: "D:/AAAA/output/11、掌柜智库01/资料/05-设备手册汇总/doc/万用表RS-12的使用.pdf"
+
+generation:
+  concurrency: 8
+  timeout_s: 120
+  max_retries: 5
+  candidates_per_bundle: 3
+  budget_usd: 30
+  target_counts:
+    train: {faithful: 2250, refusal: 1000, multi: 1000, term: 750}
+    dev: {faithful: 225, refusal: 100, multi: 100, term: 75}
+    test: {faithful: 225, refusal: 100, multi: 100, term: 75}
+
+retrieval:
+  mode: auto            # auto -> bge if embeddings.npz exists, else bm25
+  top_k: 10
+  dense_weight: 0.8
+  sparse_weight: 0.2
+  min_context: 3
+  max_context: 10
+  abs_gap: 0.10
+  rel_gap: 0.25
+  entity_filter_rate: 0.8
+  shuffle_contexts: true
+
+seed: 42

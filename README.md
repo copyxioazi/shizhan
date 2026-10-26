@@ -6,6 +6,7 @@
 
 - [自动化安全评估系统](projects/auto-security/README.md) — 基于 FastAPI + React + Docker 沙箱的自动化安全评估系统，支持规则引擎、LLM 多角色、ReAct 工具循环与可选的 LangGraph 编排。
 - [合同审批审查系统](projects/contract-approval-review-system/README.md) — 基于 FastAPI + SQLite 的合同审批自动审查系统，支持 PDF/DOCX/OCR 解析、14 条规则的证据审查、Mock 审批系统、异步流水线与幂等评论回写。
+- [掌柜智库 Qwen3-8B QLoRA 微调](projects/kb-sft-qlora/README.md) — 本地 CPU 合成 grounded SFT 数据，云端 GPU 做 Qwen3-8B QLoRA 训练，覆盖术语格式、忠实回答与引用、多片段整合与分级拒答。
 
 ## 目录约定
 
@@ -14,12 +15,12 @@
 ├── README.md                 # 本索引
 ├── .gitignore                # 仓库级通用忽略规则
 └── projects/
-    └── auto-security/        # 当前项目
-        ├── backend/
-        ├── frontend/
-        ├── db/
-        ├── sandbox/
-        ├── docs/
+    ├── auto-security/                    # 自动化安全评估系统
+    ├── contract-approval-review-system/  # 合同审批审查系统
+    └── kb-sft-qlora/                     # 掌柜智库 Qwen3-8B QLoRA
+        ├── local/                        # CPU 数据管线
+        ├── cloud/                        # GPU QLoRA 训练/评测
+        ├── shared/                       # prompt 模板与 schema
         └── README.md
 ```
 

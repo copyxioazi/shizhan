@@ -1,0 +1,16 @@
+# 管线生成的数据与训练产物（不入库，按 README 在本地重建）
+/data/
+/dist/
+/runs/
+/cloud/data/*.jsonl
+
+# Python 构建产物与缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# 密钥
+.env
